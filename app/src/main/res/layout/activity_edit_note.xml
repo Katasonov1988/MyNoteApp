@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.editNote.EditNoteActivity">
+
+
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarEditNoteUp"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/scrollEditText"
+        android:background="#FFFFFF"
+        android:elevation="2dp"
+        />
+
+    <ScrollView
+        android:id="@+id/scrollEditText"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarEditNoteUp"
+        app:layout_constraintBottom_toTopOf="@+id/toolbarEditNoteDown"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/editTextHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:fontFamily="@font/source_sans_pro_semi_bold600"
+                android:textSize="18sp"
+                android:layout_marginTop="24dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:inputType="textMultiLine"
+                android:textColorHint="#80222530"
+                android:textColor="#222530"
+                android:gravity="start"
+                android:backgroundTint="@android:color/transparent"
+                android:hint="@string/write_header"
+                android:importantForAutofill="no" />
+
+            <TextView
+                android:id="@+id/lastChangeOfDateTextView"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:textColor="#707278"
+                android:paddingStart="4dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="16dp"
+                android:textSize="14sp"
+                android:fontFamily="@font/source_sans_pro_regular400"
+                android:hint="Последнее изменение"
+                />
+
+
+            <View
+                android:id="@+id/viewLineActivityNote"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#1A222530"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:backgroundTint="#222530" />
+
+            <EditText
+                android:id="@+id/editTextDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/write_text"
+                android:layout_marginEnd="16dp"
+                android:textStyle="normal"
+                android:fontFamily="@font/source_sans_pro_regular400"
+                android:textSize="16sp"
+                android:inputType="textMultiLine"
+                android:backgroundTint="@android:color/transparent"
+                android:textColor="#222530"
+                android:textColorHint="#80222530"
+                android:layout_marginStart="16dp"
+                android:importantForAutofill="no"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarEditNoteDown"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:elevation="2dp"
+        android:background="#222530">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/toolbarDownButtonDelete"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:background="@drawable/ic_baseline_delete_24"/>
+            <Button
+                android:id="@+id/toolbarDownButtonShare"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_gravity="center"
+                android:background="@drawable/ic_baseline_share_24"/>
+            <Button
+                android:id="@+id/toolbarDownButtonAdd"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:background="@drawable/ic_baseline_add_white_24"/>
+
+
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButtonSaveNote"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:backgroundTint="#0A55F8"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tint="@android:color/white"
+        android:src="@drawable/ic_baseline_check_24"
+        tools:ignore="SpeakableTextPresentCheck"
+        android:contentDescription="@string/add_new_note" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <androidx.cardview.widget.CardView
+    android:id="@+id/cardviewNote"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="1dp"
+        app:cardBackgroundColor="#EEEEF4"
+        app:cardCornerRadius="10dp"
+        android:layout_margin="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textViewHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:fontFamily="@font/source_sans_pro_semi_bold600"
+            android:textSize="15sp"
+            android:gravity="start"
+            android:textColor="#222530"
+            android:maxLines="2"
+            android:text="header"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textViewDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#222530"
+            android:maxLines="2"
+            android:gravity="start"
+            android:textSize="12sp"
+            android:fontFamily="@font/source_sans_pro_regular400"
+            android:textStyle="normal"
+            android:layout_marginTop="4dp"
+            android:text="description"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewHeader" />
+
+        <TextView
+            android:id="@+id/textViewDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#6B2B2D31"
+            android:textSize="12sp"
+            android:fontFamily="@font/source_sans_pro_regular400"
+            android:textStyle="normal"
+            android:layout_marginTop="6dp"
+            android:text="time"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewDescription" />
+
+        <TextView
+            android:id="@+id/textViewId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#6B2B2D31"
+            android:textSize="12sp"
+            android:fontFamily="@font/source_sans_pro_regular400"
+            android:textStyle="normal"
+            android:layout_marginTop="6dp"
+            android:text="id"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewDate"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    </androidx.cardview.widget.CardView>

@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">MyNote</string>
+    <string name="add_note">add note</string>
+    <string name="notes_don_not_exist_add_note">У вас нет заметок.\nНажмите + чтобы добавить</string>
+    <string name="search_text_view">Для поиска введите запрос</string>
+    <string name="add_new_note">add new note</string>
+    <string name="search_note">search note</string>
+    <string name="back">back</string>
+    <string name="add">add</string>
+    <string name="delete">delete</string>
+    <string name="share">share</string>
+    <string name="write_text">Введите текст</string>
+    <string name="write_header">Введите заголовок</string>
+    <string name="dialog_title">Удаление заметки</string>
+    <string name="dialog_message">Вы действительно хотите удалить заметку?</string>
+    <string name="button_cancel">ОТМЕНА</string>
+    <string name="button_delete">УДАЛИТЬ</string>
+    <string name="search">Search</string>
+    <string name="search_title">заголовок поиска</string>
+    <string name="search_button">search_button</string>
+</resources>
