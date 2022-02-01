@@ -15,9 +15,9 @@ import java.util.List;
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder> {
     private List<Note> notes;
 
-    private OnNoteClickListener onNoteClickListener;
+    public OnNoteClickListener onNoteClickListener;
 
-    interface OnNoteClickListener {
+   public interface OnNoteClickListener {
         void onNoteClick(int position);
     }
 

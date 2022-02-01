@@ -36,7 +36,7 @@
             android:fontFamily="@font/source_sans_pro_regular400"
             android:gravity="center"
             android:maxLines="2"
-            android:text="@string/search_text_view"
+            android:text="@string/for_search_enter_text"
             android:textColor="#222530"
             android:textSize="16sp"
             android:textStyle="normal" />
@@ -59,7 +59,7 @@
         />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerviewNotes"
+        android:id="@+id/recyclerviewSearchNotes"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="16dp"
@@ -67,8 +67,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

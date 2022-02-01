@@ -2,7 +2,8 @@
     <string name="app_name">MyNote</string>
     <string name="add_note">add note</string>
     <string name="notes_don_not_exist_add_note">У вас нет заметок.\nНажмите + чтобы добавить</string>
-    <string name="search_text_view">Для поиска введите запрос</string>
+    <string name="for_search_enter_text">Для поиска введите запрос</string>
+    <string name="found_nothing">Ничего не найдено</string>
     <string name="add_new_note">add new note</string>
     <string name="search_note">search note</string>
     <string name="back">back</string>

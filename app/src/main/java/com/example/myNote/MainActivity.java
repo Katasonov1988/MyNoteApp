@@ -59,8 +59,7 @@ public class MainActivity extends AppCompatActivity {
         }
         NoteAdapter noteAdapter = new NoteAdapter(notes);
 
-        recyclerViewNotes.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
-     //   recyclerViewNotes.setLayoutManager(new GridLayoutManager(this,2));
+        recyclerViewNotes.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));;
         recyclerViewNotes.setAdapter(noteAdapter);
         noteAdapter.setOnNoteClickListener(new NoteAdapter.OnNoteClickListener() {
             @Override
