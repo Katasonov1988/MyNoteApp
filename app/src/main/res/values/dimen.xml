@@ -1,4 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
+    <dimen name="textViewHeaderTextSize">15sp</dimen>
+    <dimen name="textViewDescriptionTextSize">12sp</dimen>
+    <dimen name="textViewDescriptionLayoutMarginTop">4dp</dimen>
+    <dimen name="noteLinearLayoutCompatLayoutMargin">12dp</dimen>
+    <dimen name="noteCardViewNoteElevation">1dp</dimen>
+    <dimen name="noteCardViewNoteLayoutMargin">8dp</dimen>
+    <dimen name="noteCardViewNoteCardCornerRadius">10dp</dimen>
+    <dimen name="zeroDp">0dp</dimen>
+    <dimen name="activityMainMainToolbarElevation">2dp</dimen>
+    <dimen name="activityMainFABLayoutWidth">56dp</dimen>
+    <dimen name="activityMainFABLayoutHeight">56dp</dimen>
+    <dimen name="activityMainFABLayoutMarginEnd">15dp</dimen>
+    <dimen name="activityMainFABLayoutMarginBottom">16dp</dimen>
+    <dimen name="activityEditNoteToolbarElevation">2dp</dimen>
+    <dimen name="nestedScrollViewPaddingBottom">100dp</dimen>
+    <dimen name="nestedScrollViewPaddingTop">56dp</dimen>
+    <dimen name="editNoteViewLineActivityNoteLayoutHeight">1dp</dimen>
+    <dimen name="editNoteViewEditTextDescriptionTextSize">16sp</dimen>
+    <dimen name="editNoteViewEditTextHeaderTextSize">18sp</dimen>
+    <dimen name="editNoteViewLayoutMarginTop">24dp</dimen>
+    <dimen name="editNoteLastChangeOfDateTextViewPaddingStart">4dp</dimen>
+    <dimen name="editNoteLastChangeOfDateTextViewLayoutMarginBottom">16dp</dimen>
+    <dimen name="editNoteLastChangeOfDateTextViewTextSize">14sp</dimen>
 </resources>
+

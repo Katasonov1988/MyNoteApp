@@ -8,65 +8,45 @@
 
     <LinearLayout
         android:id="@+id/linearLayoutSearchScreen"
-        android:layout_width="283dp"
-        android:layout_height="165dp"
-        android:visibility="visible"
-        android:orientation="vertical"
+        style="@style/BackgroundLinearLayout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="UseCompoundDrawables">
 
         <ImageView
             android:id="@+id/searchImageButton"
-            android:layout_width="142dp"
-            android:layout_height="101dp"
-            android:layout_gravity="center"
-            android:backgroundTint="#00000000"
-            app:srcCompat="@drawable/search"
-            android:contentDescription="@string/add_note" />
+            style="@style/BackgroundPicture"
+            android:contentDescription="@string/search_picture"
+            app:srcCompat="@drawable/search" />
 
         <TextView
             android:id="@+id/searchTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="16dp"
-            android:alpha="0.5"
-            android:fontFamily="@font/source_sans_pro_regular400"
-            android:gravity="center"
-            android:maxLines="2"
-            android:text="@string/for_search_enter_text"
-            android:textColor="#222530"
-            android:textSize="16sp"
-            android:textStyle="normal" />
+            style="@style/BackgroundHint"
+            android:text="@string/for_search_enter_text" />
 
     </LinearLayout>
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/search_toolbar"
         android:layout_width="match_parent"
-        android:background="#222530"
         android:layout_height="?attr/actionBarSize"
-        app:contentInsetStartWithNavigation="0dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:ignore="MissingConstraints"
-        app:theme="@style/ToolbarColoredBackArrow"
+        android:background="#222530"
         android:elevation="2dp"
-
-        />
+        app:contentInsetStartWithNavigation="@dimen/zeroDp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:theme="@style/ToolbarColoredBackArrow"
+        tools:ignore="MissingConstraints" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerviewSearchNotes"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_margin="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/search_toolbar"
+        style="@style/RecyclerviewStyle"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
-
+        app:layout_constraintTop_toBottomOf="@+id/search_toolbar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

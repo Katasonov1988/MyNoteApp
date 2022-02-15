@@ -6,6 +6,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,21 +28,20 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
-    private FloatingActionButton floatingActionButtonAddNote;
-    private RecyclerView recyclerViewNotes;
     public static List<Note> notes = new ArrayList<>();
     private LinearLayout linearLayoutStartScreen;
+    private NoteAdapter noteAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        recyclerViewNotes = findViewById(R.id.recyclerviewNotes);
+        RecyclerView recyclerViewNotes = findViewById(R.id.recyclerviewNotes);
         linearLayoutStartScreen = findViewById(R.id.linearLayoutStartScreen);
         Toolbar mainToolbar = findViewById(R.id.main_toolbar);
         setSupportActionBar(mainToolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
-        floatingActionButtonAddNote = findViewById(R.id.floatingActionButtonAddNote);
+        FloatingActionButton floatingActionButtonAddNote = findViewById(R.id.floatingActionButtonAddNote);
         floatingActionButtonAddNote.setOnClickListener(onClickNewNote);
 
         Collections.sort(notes, new Comparator<Note>() {
@@ -51,24 +51,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         Collections.reverse(notes);
-
-        if (notes.isEmpty()) {
-                linearLayoutStartScreen.setVisibility(View.VISIBLE);
-                getSupportActionBar().hide();
-
-        }
-        NoteAdapter noteAdapter = new NoteAdapter(notes);
-
-        recyclerViewNotes.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));;
+        changeMainScreen();
+        noteAdapter = new NoteAdapter(notes);
+        recyclerViewNotes.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         recyclerViewNotes.setAdapter(noteAdapter);
         noteAdapter.setOnNoteClickListener(new NoteAdapter.OnNoteClickListener() {
             @Override
             public void onNoteClick(int position) {
 
-             Note note = notes.get(position);
-             String noteId = note.getId();
-                Intent intent = new Intent(MainActivity.this,EditNoteActivity.class);
-                intent.putExtra("id",noteId);
+                Note note = notes.get(position);
+                String noteId = note.getId();
+                Intent intent = new Intent(MainActivity.this, EditNoteActivity.class);
+                intent.putExtra("id", noteId);
                 startActivity(intent);
             }
         });
@@ -78,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main_menu,menu);
+        inflater.inflate(R.menu.main_menu, menu);
         return true;
     }
 
@@ -99,4 +93,20 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    private void changeMainScreen() {
+        if (notes.isEmpty()) {
+            linearLayoutStartScreen.setVisibility(View.VISIBLE);
+            Objects.requireNonNull(getSupportActionBar()).hide();
+        } else {
+            linearLayoutStartScreen.setVisibility(View.GONE);
+            Objects.requireNonNull(getSupportActionBar()).show();
+        }
+    }
+    @SuppressLint("NotifyDataSetChanged")
+    @Override
+    protected void onStart() {
+        super.onStart();
+        noteAdapter.notifyDataSetChanged();
+        changeMainScreen();
+    }
 }

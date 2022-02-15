@@ -5,9 +5,5 @@
         android:id="@+id/action_search_note"
         android:icon="@drawable/ic_baseline_search_white_17_49"
         android:title="@string/search_note"
-        app:showAsAction="ifRoom"
-      />
-
-
-
+        app:showAsAction="ifRoom" />
 </menu>

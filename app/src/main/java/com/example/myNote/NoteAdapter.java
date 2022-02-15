@@ -13,18 +13,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder> {
-    private List<Note> notes;
-
+    public List<Note> notes;
     public OnNoteClickListener onNoteClickListener;
 
-   public interface OnNoteClickListener {
+    public interface OnNoteClickListener {
         void onNoteClick(int position);
     }
 
     public void setOnNoteClickListener(OnNoteClickListener onNoteClickListener) {
         this.onNoteClickListener = onNoteClickListener;
     }
-
     public NoteAdapter(List<Note> notes) {
         this.notes = notes;
     }
@@ -43,17 +41,20 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         holder.textViewHeader.setText(note.getHeader());
         if (note.getHeader().isEmpty()) {
             holder.textViewHeader.setVisibility(View.GONE);
+        } else {
+            holder.textViewHeader.setVisibility(View.VISIBLE);
         }
         holder.textViewDescription.setText(note.getDescription());
         if (note.getDescription().isEmpty()) {
             holder.textViewDescription.setVisibility(View.GONE);
+        } else {
+            holder.textViewDescription.setVisibility(View.VISIBLE);
         }
         String date = note.getDate().substring(0, note.getDate().length() - 5);
         holder.textViewTime.setText(date);
         String color = note.getColor();
         holder.cardView.setCardBackgroundColor(Color.parseColor(color));
         holder.textViewId.setText(note.getId());
-
     }
 
     @Override
@@ -62,11 +63,11 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     }
 
     class NoteViewHolder extends RecyclerView.ViewHolder {
-        private TextView textViewHeader;
-        private TextView textViewDescription;
-        private TextView textViewTime;
-        private TextView textViewId;
-        private CardView cardView;
+        private final TextView textViewHeader;
+        private final TextView textViewDescription;
+        private final TextView textViewTime;
+        private final TextView textViewId;
+        private final CardView cardView;
 
         public NoteViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -74,8 +75,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
             textViewDescription = itemView.findViewById(R.id.textViewDescription);
             textViewTime = itemView.findViewById(R.id.textViewDate);
             textViewId = itemView.findViewById(R.id.textViewId);
-            cardView = itemView.findViewById(R.id.cardviewNote);
-
+            cardView = itemView.findViewById(R.id.cardViewNote);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
