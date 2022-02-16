@@ -194,7 +194,7 @@ public class EditNoteActivity extends AppCompatActivity {
 
     public void sendMessage() {
         if (editTextHeader.getText().toString().isEmpty() && editTextDescription.getText().toString().isEmpty()) {
-            Log.i("dialog", "sendIsEmpty");
+            Log.i("dialog", "sendIsEmpty!");
         } else {
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
