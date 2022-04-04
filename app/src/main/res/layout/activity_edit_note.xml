@@ -34,7 +34,8 @@
 
                 <EditText
                     android:id="@+id/editTextHeader"
-                    style="@style/ActivityEditNoteMarginTopEnd"
+                    android:layout_marginStart="@dimen/activityEditNoteEditTextHeaderLayoutMarginStart"
+                    android:layout_marginEnd="@dimen/activityEditNoteEditTextHeaderLayoutMarginEnd"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/editNoteViewLayoutMarginTop"
@@ -51,7 +52,8 @@
 
                 <TextView
                     android:id="@+id/lastChangeOfDateTextView"
-                    style="@style/ActivityEditNoteMarginTopEnd"
+                    android:layout_marginStart="@dimen/activityEditNoteLastChangeOfDateTextViewLayoutMarginStart"
+                    android:layout_marginEnd="@dimen/activityEditNoteLastChangeOfDateTextViewLayoutMarginEnd"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/editNoteLastChangeOfDateTextViewLayoutMarginBottom"
@@ -65,7 +67,8 @@
 
                 <View
                     android:id="@+id/viewLineActivityNote"
-                    style="@style/ActivityEditNoteMarginTopEnd"
+                    android:layout_marginStart="@dimen/activityEditNoteViewLineActivityNoteLayoutMarginStart"
+                    android:layout_marginEnd="@dimen/activityEditNoteViewLineActivityNoteLayoutMarginEnd"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/editNoteViewLineActivityNoteLayoutHeight"
                     android:background="@color/editNoteViewLineActivityNoteBackground"
@@ -73,7 +76,8 @@
 
                 <EditText
                     android:id="@+id/editTextDescription"
-                    style="@style/ActivityEditNoteMarginTopEnd"
+                    android:layout_marginStart="@dimen/activityEditNoteEditTextDescriptionLayoutMarginStart"
+                    android:layout_marginEnd="@dimen/activityEditNoteEditTextDescriptionLayoutMarginEnd"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@android:color/transparent"

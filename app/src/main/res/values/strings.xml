@@ -27,4 +27,6 @@
     <string name="search_picture">Search picture</string>
     <string name="note_picture">Note picture</string>
     <string name="changed">Изменено</string>
+    <string name="db_name">notesDataBase</string>
+
 </resources>

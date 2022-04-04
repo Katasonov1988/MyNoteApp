@@ -3,18 +3,20 @@ package com.example.searchNote;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.MenuItemCompat;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.appcompat.widget.SearchView;
+import androidx.room.Database;
 
+import android.annotation.SuppressLint;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,11 +27,11 @@ import android.widget.Filterable;
 import android.widget.LinearLayout;
 
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.DataBase.Notes;
+import com.example.DataBase.NotesDataBase;
 import com.example.editNote.EditNoteActivity;
 import com.example.myNote.MainActivity;
-import com.example.myNote.Note;
 import com.example.myNote.NoteAdapter;
 import com.example.myNote.R;
 
@@ -38,17 +40,15 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
-public class SearchActivity extends AppCompatActivity implements Filterable {
-    public static final int checkSearchActivity = 0;
-    public static List<Note> searchNotes = new ArrayList<>();
-
+public class SearchActivity extends AppCompatActivity {
+    private List<Notes> searchActivityNotes = new ArrayList<>();
     private String searchViewString;
-
-    private LinearLayout linearLayoutSearchScreen;
+    private TextView searchTextView;
+//    private NotesDataBase database;
+    private String queryFromStringQuery;
     NoteAdapter noteAdapter;
     RecyclerView recyclerviewSearchNotes;
-
-    private TextView searchTextView;
+    private SearchViewModel searchViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,27 +58,33 @@ public class SearchActivity extends AppCompatActivity implements Filterable {
             searchViewString = savedInstanceState.getString("searchView");
             Log.i("start", "searchViewString = " + searchViewString);
         }
-        searchNotes.clear();
+        queryFromStringQuery = "";
+
         setContentView(R.layout.activity_search);
         searchTextView = findViewById(R.id.searchTextView);
-        recyclerviewSearchNotes = findViewById(R.id.recyclerviewSearchNotes);
-        linearLayoutSearchScreen = findViewById(R.id.linearLayoutSearchScreen);
-        Toolbar searchToolbar = findViewById(R.id.search_toolbar);
+
+
+//            searchViewModel = new ViewModelProvider(this).get(SearchViewModel.class);
+
+//        database = NotesDataBase.getInstance(this);
+
+        Toolbar searchToolbar = findViewById(R.id.searchToolbar);
         setSupportActionBar(searchToolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        recyclerviewSearchNotes = findViewById(R.id.recyclerviewSearchNotes);
         recyclerviewSearchNotes.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
-        noteAdapter = new NoteAdapter(searchNotes);
+        noteAdapter = new NoteAdapter(searchActivityNotes);
+        noteAdapter.clearDataFromAdapter();
         recyclerviewSearchNotes.setAdapter(noteAdapter);
 
         noteAdapter.setOnNoteClickListener(new NoteAdapter.OnNoteClickListener() {
             @Override
-            public void onNoteClick(int position) {
-                Note note = searchNotes.get(position);
-                String noteId = note.getId();
+            public void onNoteClick(Notes notes) {
+                String noteId = notes.getId();
                 Intent intent = new Intent(SearchActivity.this, EditNoteActivity.class);
                 intent.putExtra("id", noteId);
-                intent.putExtra("checkSearchActivity", checkSearchActivity);
                 startActivity(intent);
             }
         });
@@ -86,7 +92,6 @@ public class SearchActivity extends AppCompatActivity implements Filterable {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        searchNotes.clear();
         finish();
         return true;
     }
@@ -104,10 +109,11 @@ public class SearchActivity extends AppCompatActivity implements Filterable {
         searchView.findViewById(androidx.appcompat.R.id.search_mag_icon).setVisibility(View.GONE);
         searchView.setMaxWidth(Integer.MAX_VALUE);
         searchView.findViewById(androidx.appcompat.R.id.search_plate).setBackgroundColor(Color.TRANSPARENT);
-        searchView.setQueryHint("Search");
+        searchView.setQueryHint(getResources().getString( R.string.search ));
         searchView.setQuery(searchViewString, false);
         searchView.findViewById(androidx.appcompat.R.id.search_close_btn).setVisibility(View.VISIBLE);
         View closeBtn = searchView.findViewById(androidx.appcompat.R.id.search_close_btn);
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
             @Override
@@ -119,7 +125,32 @@ public class SearchActivity extends AppCompatActivity implements Filterable {
             public boolean onQueryTextChange(String s) {
                 searchViewString = s;
                 searchView.findViewById(androidx.appcompat.R.id.search_close_btn).setVisibility(View.VISIBLE);
-                getFilter().filter(s);
+//                if (s.isEmpty()) {
+//                    noteAdapter.clearDataFromAdapter();
+//                    searchTextView.setVisibility(View.VISIBLE);
+//                    searchTextView.setText(R.string.for_search_enter_text);
+//                } else {
+//
+//                    searchViewModel.setQueryFromSearchString(s);
+//                    LiveData<List<Notes>> notesFromDB = searchViewModel.getNotesFromHeaderOrDescription();
+//                    notesFromDB.observe(SearchActivity.this, new Observer<List<Notes>>() {
+//                        @Override
+//                        public void onChanged(List<Notes> notesFromLiveData) {
+//                            noteAdapter.setNewDataToAdapter(notesFromLiveData);
+//                            if (searchActivityNotes.size() >= 1) {
+//                                searchTextView.setVisibility(View.GONE);
+//                            } else {
+//                                searchTextView.setVisibility(View.VISIBLE);
+//                                searchTextView.setText(R.string.found_nothing);
+//                            }
+//
+//                        }
+//                    });
+////                    searchActivityNotes = database.noteDAO().searchNotesFromHeaderOrDescription(s);
+////                    noteAdapter.setNewDataToAdapter(searchActivityNotes);
+//
+//                }
+
                 return false;
             }
         });
@@ -128,8 +159,7 @@ public class SearchActivity extends AppCompatActivity implements Filterable {
             @Override
             public void onClick(View v) {
                 if (searchView.getQuery().toString().isEmpty()) {
-                    Intent intent = new Intent(SearchActivity.this, MainActivity.class);
-                    startActivity(intent);
+                    finish();
                 } else {
                     searchView.setQuery("", false);
                 }
@@ -139,70 +169,40 @@ public class SearchActivity extends AppCompatActivity implements Filterable {
     }
 
     @Override
-    public Filter getFilter() {
-        return filter;
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
-
-    Filter filter = new Filter() {
-        final List<Note> filterNotes = new ArrayList<>();
-
-        @Override
-        protected FilterResults performFiltering(CharSequence charSequence) {
-            filterNotes.clear();
-            if (charSequence.toString().isEmpty()) {
-                filterNotes.clear();
-            } else {
-                for (Note note : MainActivity.notes) {
-                    if (note.getHeader().toLowerCase().contains(charSequence.toString().toLowerCase()) ||
-                            note.getDescription().toLowerCase().contains(charSequence.toString().toLowerCase())) {
-                        filterNotes.add(note);
-                    }
-                }
-            }
-            FilterResults filterResults = new FilterResults();
-            filterResults.values = filterNotes;
-            return filterResults;
-        }
-
-        @Override
-        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-            searchNotes.clear();
-            searchNotes.addAll((Collection<? extends Note>) filterResults.values);
-            noteAdapter.notifyDataSetChanged();
-            if (charSequence.toString().isEmpty()) {
-                linearLayoutSearchScreen.setVisibility(View.VISIBLE);
-                searchTextView.setText(R.string.for_search_enter_text);
-            } else if (searchNotes.size() >= 1) {
-                linearLayoutSearchScreen.setVisibility(View.GONE);
-            } else {
-                linearLayoutSearchScreen.setVisibility(View.VISIBLE);
-                searchTextView.setText(R.string.found_nothing);
-            }
-        }
-    };
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putString("searchView", searchViewString);
+        Log.i("start", "onSaveInstanceState: " + searchViewString);
         super.onSaveInstanceState(outState);
+    }
+
+    private  void changeSearchActivityScreen() {
+        if (!searchActivityNotes.isEmpty()) {
+            searchTextView.setVisibility(View.GONE);
+        }
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        noteAdapter.notifyDataSetChanged();
-        if (!searchNotes.isEmpty()) {
-            linearLayoutSearchScreen.setVisibility(View.GONE);
-        }
         Log.i("start", "onStart");
+//        if (!queryFromStringQuery.isEmpty()) {
+//            searchActivityNotes = database.noteDAO().searchNotesFromHeaderOrDescription(queryFromStringQuery) ;
+//            noteAdapter.setNewDataToAdapter(searchActivityNotes);
+//            changeSearchActivityScreen();
+//        };
     }
+
 
     @Override
     protected void onPostResume() {
         super.onPostResume();
-//        noteAdapter.notifyDataSetChanged();
         Log.i("start", "onPostResume");
-
     }
 
     @Override
@@ -214,10 +214,8 @@ public class SearchActivity extends AppCompatActivity implements Filterable {
     @Override
     protected void onStop() {
         super.onStop();
+        queryFromStringQuery = searchViewString;
         Log.i("start", "onStop");
-        linearLayoutSearchScreen.setVisibility(View.VISIBLE);
-        searchTextView.setText(R.string.found_nothing);
-
     }
 
     @Override
@@ -225,7 +223,6 @@ public class SearchActivity extends AppCompatActivity implements Filterable {
         super.onDestroy();
         Log.i("start", "onDestroy");
     }
-
 }
 
 

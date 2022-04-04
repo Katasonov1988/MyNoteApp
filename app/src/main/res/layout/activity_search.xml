@@ -6,34 +6,28 @@
     android:layout_height="match_parent"
     tools:context="com.example.searchNote.SearchActivity">
 
-    <LinearLayout
-        android:id="@+id/linearLayoutSearchScreen"
-        style="@style/BackgroundLinearLayout"
+
+    <TextView
+        android:id="@+id/searchTextView"
+        style="@style/BackgroundHint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:drawableTop="@drawable/search"
+        android:text="@string/for_search_enter_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="UseCompoundDrawables">
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/searchImageButton"
-            style="@style/BackgroundPicture"
-            android:contentDescription="@string/search_picture"
-            app:srcCompat="@drawable/search" />
 
-        <TextView
-            android:id="@+id/searchTextView"
-            style="@style/BackgroundHint"
-            android:text="@string/for_search_enter_text" />
-
-    </LinearLayout>
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/search_toolbar"
+        android:id="@+id/searchToolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="#222530"
-        android:elevation="2dp"
+        android:background="@color/toolbarBackgroundBlack"
+        android:elevation="@dimen/activitySearchSearchToolbarElevation"
         app:contentInsetStartWithNavigation="@dimen/zeroDp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -43,10 +37,12 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerviewSearchNotes"
-        style="@style/RecyclerviewStyle"
+        android:layout_width="@dimen/activitySearchRecyclerviewNotesLayoutWidth"
+        android:layout_height="@dimen/activitySearchRecyclerviewNotesLayoutHeight"
+        android:layout_margin="@dimen/activitySearchRecyclerviewNotesLayoutMargin"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/searchToolbar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -25,27 +25,30 @@
     <LinearLayout
         android:id="@+id/linearLayoutStartScreen"
         style="@style/BackgroundLinearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="UseCompoundDrawables">
 
-        <ImageView
-            android:id="@+id/imageButton"
-            style="@style/BackgroundPicture"
-            android:contentDescription="@string/note_picture"
-            app:srcCompat="@drawable/image_add_note" />
+
 
         <TextView
             android:id="@+id/textView"
             style="@style/BackgroundHint"
-            android:text="@string/notes_don_not_exist_add_note" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/activityMainSearchTextViewLayoutMarginTop"
+            android:text="@string/notes_don_not_exist_add_note"
+            app:drawableTopCompat="@drawable/add_note" />
 
     </LinearLayout>
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/main_toolbar"
+        android:id="@+id/mainToolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/toolbarBackgroundBlack"
@@ -56,10 +59,12 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerviewNotes"
-        style="@style/RecyclerviewStyle"
+        android:layout_width="@dimen/activityMainRecyclerviewNotesLayoutWidth"
+        android:layout_height="@dimen/activityMainRecyclerviewNotesLayoutHeight"
+        android:layout_margin="@dimen/activityMainRecyclerviewNotesLayoutMargin"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/main_toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/mainToolbar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

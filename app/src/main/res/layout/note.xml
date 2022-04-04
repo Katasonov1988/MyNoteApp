@@ -8,9 +8,7 @@
     android:layout_margin="@dimen/noteCardViewNoteLayoutMargin"
     android:elevation="@dimen/noteCardViewNoteElevation"
     app:cardBackgroundColor="@color/noteCardBackgroundColor"
-    app:cardCornerRadius="@dimen/noteCardViewNoteCardCornerRadius"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent">
+    app:cardCornerRadius="@dimen/noteCardViewNoteCardCornerRadius">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="wrap_content"
@@ -21,6 +19,8 @@
         <TextView
             android:id="@+id/textViewHeader"
             style="@style/StyleOfNoteHeaderAndDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:fontFamily="@font/source_sans_pro_semi_bold600"
             android:textSize="@dimen/textViewHeaderTextSize"
             android:textStyle="bold"
@@ -30,6 +30,8 @@
         <TextView
             android:id="@+id/textViewDescription"
             style="@style/StyleOfNoteHeaderAndDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/textViewDescriptionLayoutMarginTop"
             android:fontFamily="@font/source_sans_pro_regular400"
             android:textSize="@dimen/textViewDescriptionTextSize"
@@ -40,14 +42,11 @@
         <TextView
             android:id="@+id/textViewDate"
             style="@style/StyleOfNoteIdAndColor"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="@dimen/NoteTextViewDateMarginTop"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewDescription" />
-
-        <TextView
-            android:id="@+id/textViewId"
-            style="@style/StyleOfNoteIdAndColor"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewDate" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 </androidx.cardview.widget.CardView>

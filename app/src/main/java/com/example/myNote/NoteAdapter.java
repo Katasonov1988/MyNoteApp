@@ -1,6 +1,7 @@
 package com.example.myNote;
 
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,25 +9,41 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.DataBase.Notes;
+import com.example.DataBase.NotesDataBase;
 
 import java.util.List;
 
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder> {
-    public List<Note> notes;
+
+    public static List<Notes> notes;
     public OnNoteClickListener onNoteClickListener;
 
     public interface OnNoteClickListener {
-        void onNoteClick(int position);
+        void onNoteClick(Notes note);
     }
 
     public void setOnNoteClickListener(OnNoteClickListener onNoteClickListener) {
         this.onNoteClickListener = onNoteClickListener;
     }
-    public NoteAdapter(List<Note> notes) {
+    public NoteAdapter(List<Notes> notes) {
         this.notes = notes;
     }
 
+
+    public void setNotes(List<Notes> note) {
+        notes.clear();
+        notes.addAll(note);
+        notifyDataSetChanged();
+    }
+
+    public void clearDataFromAdapter() {
+        notes.clear();
+        notifyDataSetChanged();
+    }
 
     @NonNull
     @Override
@@ -37,7 +54,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull NoteViewHolder holder, int position) {
-        Note note = notes.get(position);
+        Notes note = notes.get(position);
         holder.textViewHeader.setText(note.getHeader());
         if (note.getHeader().isEmpty()) {
             holder.textViewHeader.setVisibility(View.GONE);
@@ -53,8 +70,16 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         String date = note.getDate().substring(0, note.getDate().length() - 5);
         holder.textViewTime.setText(date);
         String color = note.getColor();
+        Log.i("color", color);
         holder.cardView.setCardBackgroundColor(Color.parseColor(color));
-        holder.textViewId.setText(note.getId());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (onNoteClickListener != null) {
+                    onNoteClickListener.onNoteClick(note);
+                }
+            }
+        });
     }
 
     @Override
@@ -66,7 +91,6 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         private final TextView textViewHeader;
         private final TextView textViewDescription;
         private final TextView textViewTime;
-        private final TextView textViewId;
         private final CardView cardView;
 
         public NoteViewHolder(@NonNull View itemView) {
@@ -74,16 +98,15 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
             textViewHeader = itemView.findViewById(R.id.textViewHeader);
             textViewDescription = itemView.findViewById(R.id.textViewDescription);
             textViewTime = itemView.findViewById(R.id.textViewDate);
-            textViewId = itemView.findViewById(R.id.textViewId);
             cardView = itemView.findViewById(R.id.cardViewNote);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (onNoteClickListener != null) {
-                        onNoteClickListener.onNoteClick(getAdapterPosition());
-                    }
-                }
-            });
+//            itemView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    if (onNoteClickListener != null) {
+//                        onNoteClickListener.onNoteClick(getAdapterPosition());
+//                    }
+//                }
+//            });
         }
     }
 }
