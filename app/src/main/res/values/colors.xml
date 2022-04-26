@@ -20,6 +20,7 @@
     <color name="noteColorLightBlue">#C3D9FF</color>
     <color name="noteColorLightRose">#F8D9DE</color>
     <color name="noteColorLightOrange">#FFF5E6</color>
+    <color name="statusBarColor">#000000</color>
 
 </resources>
 
