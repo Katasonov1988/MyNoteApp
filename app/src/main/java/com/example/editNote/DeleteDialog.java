@@ -27,7 +27,6 @@ import java.util.List;
 public class DeleteDialog extends DialogFragment {
 
     private static final String TAG = "MyDeleteDialog";
-
     public DeleteNoteToEditNoteActivityCallback deleteNoteToEditNoteActivityCallback;
 
     public interface DeleteNoteToEditNoteActivityCallback {

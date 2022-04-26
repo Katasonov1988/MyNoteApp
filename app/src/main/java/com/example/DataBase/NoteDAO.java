@@ -8,9 +8,9 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Completable;
 import io.reactivex.Flowable;
 
 
@@ -21,28 +21,18 @@ public interface NoteDAO {
     LiveData<List<Notes>> getAllNotes();
 
     @Query("SELECT * FROM note WHERE id = :noteId")
-    Flowable<Notes> getNoteById(String noteId);
+    Flowable <Notes> getNoteById(String noteId);
 
     @Query("SELECT * FROM note WHERE header LIKE '%' || :searchQuery || '%' OR description LIKE '%' || :searchQuery || '%' ORDER BY date DESC")
-    List<Notes> searchNotesFromHeaderOrDescription(String searchQuery);
+    Flowable <List<Notes>> searchOfNotes(String searchQuery);
 
-
-    @Insert
-   public void insertNote (Notes notes);
-//
-//    @Insert (onConflict = OnConflictStrategy.REPLACE)
-//    public void insertNote (Notes notes);
-
-    @Delete
-    public void deleteNote (Notes notes);
-
-    @Update
-    public void updateNote (Notes notes);
+    @Insert (onConflict = OnConflictStrategy.REPLACE)
+    public Completable insertOrUpdateNote (Notes notes);
 
     @Query("DELETE FROM note")
     public void deleteAllNotes();
 
     @Query("DELETE FROM note WHERE id = :noteId")
-    public void deleteNoteById (String noteId);
+    public Completable deleteNoteById (String noteId);
 
 }

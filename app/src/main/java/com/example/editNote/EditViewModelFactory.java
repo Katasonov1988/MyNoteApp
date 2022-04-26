@@ -6,11 +6,14 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.DataBase.Notes;
+
 public class EditViewModelFactory implements ViewModelProvider.Factory {
     private final String noteId;
     private final Application application;
 
     public EditViewModelFactory(String noteId, Application application) {
+        super();
         this.noteId = noteId;
         this.application = application;
     }
@@ -21,6 +24,6 @@ public class EditViewModelFactory implements ViewModelProvider.Factory {
         if (modelClass == EditViewModel.class) {
             return (T) new EditViewModel(application, noteId);
         }
-        return null;
+        return null ;
     }
 }

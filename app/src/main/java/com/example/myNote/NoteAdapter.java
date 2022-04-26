@@ -99,14 +99,6 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
             textViewDescription = itemView.findViewById(R.id.textViewDescription);
             textViewTime = itemView.findViewById(R.id.textViewDate);
             cardView = itemView.findViewById(R.id.cardViewNote);
-//            itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    if (onNoteClickListener != null) {
-//                        onNoteClickListener.onNoteClick(getAdapterPosition());
-//                    }
-//                }
-//            });
         }
     }
 }

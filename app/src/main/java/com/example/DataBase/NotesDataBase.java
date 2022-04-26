@@ -12,15 +12,16 @@ import com.example.myNote.R;
 @Database(entities = {Notes.class}, version = 1)
 public abstract class NotesDataBase extends RoomDatabase {
 
-private static NotesDataBase dataBase;
-private static final String DB_NAME = "notes";
+    private static NotesDataBase dataBase;
+    private static final String DB_NAME = "notes";
 
-public static NotesDataBase getInstance(Context context)     {
-    if (dataBase == null) {
-dataBase = Room.databaseBuilder(context,NotesDataBase.class,DB_NAME)
-        .build();
+    public static NotesDataBase getInstance(Context context) {
+        if (dataBase == null) {
+            dataBase = Room.databaseBuilder(context, NotesDataBase.class, DB_NAME)
+                    .build();
+        }
+        return dataBase;
     }
-    return dataBase;
-}
+
     public abstract NoteDAO noteDAO();
 }

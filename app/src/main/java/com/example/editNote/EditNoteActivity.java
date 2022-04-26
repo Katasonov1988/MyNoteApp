@@ -5,27 +5,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import com.example.DataBase.Notes;
-import com.example.DataBase.NotesDataBase;
-import com.example.myNote.MainViewModel;
 import com.example.myNote.R;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import org.reactivestreams.Subscription;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -33,10 +24,9 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.Random;
 import java.util.UUID;
-
-import io.reactivex.FlowableSubscriber;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
@@ -44,16 +34,13 @@ public class EditNoteActivity extends AppCompatActivity implements DeleteDialog.
     private EditText editTextHeader;
     private EditText editTextDescription;
     private TextView textViewDate;
-    private int checkSearchActivity;
     private String id;
     private String noteId;
     private String color;
-//  private NotesDataBase dataBase;
     private BottomAppBar bottomAppBar;
-    private Notes notes;
+    private Notes newNote;
     private EditViewModel editViewModel;
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
-    private static final String TAG = "FirstActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,26 +51,37 @@ public class EditNoteActivity extends AppCompatActivity implements DeleteDialog.
         editTextDescription = findViewById(R.id.editTextDescription);
         textViewDate = findViewById(R.id.lastChangeOfDateTextView);
         id = "";
+        Log.i("start", "onCreateEditActivity");
+
 
         initToolbar();
 
         bottomAppBar = findViewById(R.id.bottomAppBar);
         initialBottomAppBar();
 
-//        dataBase = NotesDataBase.getInstance(getApplicationContext());
+
         FloatingActionButton floatingActionButtonSaveNote = findViewById(R.id.floatingActionButtonSaveNote);
         floatingActionButtonSaveNote.setOnClickListener(onClickSaveNewNote);
 
+        checkIntentFromMainActivity();
+
+
         EditViewModelFactory editViewModelFactory = new EditViewModelFactory(noteId, this.getApplication());
         editViewModel = new ViewModelProvider(this, editViewModelFactory).get(EditViewModel.class);
+
         getIntentFromMainActivity();
     }
 
-    public void getIntentFromMainActivity() {
-        Intent intentGetNote = getIntent();
-        if (intentGetNote.hasExtra("id") && !intentGetNote.getStringExtra("id").isEmpty()) {
-            noteId = intentGetNote.getStringExtra("id");
+    public void checkIntentFromMainActivity() {
+        Intent intentGetIdNote = getIntent();
+        if (intentGetIdNote.hasExtra("id") && !intentGetIdNote.getStringExtra("id").isEmpty()) {
+            noteId = intentGetIdNote.getStringExtra("id");
             Log.i("id", noteId);
+        }
+    }
+
+    public void getIntentFromMainActivity() {
+        if (noteId != null) {
             compositeDisposable.add(editViewModel.getNote()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -98,36 +96,17 @@ public class EditNoteActivity extends AppCompatActivity implements DeleteDialog.
                             id = notes.getId();
                             color = notes.getColor();
                         }
+                    }, new Consumer<Throwable>() {
+                        @Override
+                        public void accept(Throwable notes) throws Exception {
+                            Log.e("error", "error", notes);
+                        }
                     }));
-
-
-//            editViewModel.getNote()
-//                    .observeOn(AndroidSchedulers.mainThread())
-//                    .subscribe(new Consumer<Notes>() {
-//                        @Override
-//                        public void accept(Notes notes) {
-//                            editTextHeader.setText(notes.getHeader());
-//                            editTextDescription.setText(notes.getDescription());
-//                            textViewDate.setVisibility(View.VISIBLE);
-//                            textViewDate.setText(notes.getDate());
-//                            id = notes.getId();
-//                            color = notes.getColor();
-//                        }
-//                    });
-//            Notes notes = dataBase.noteDAO().getNoteById(noteId);
-//            Log.i("id", notes.getId());
-//            for (Notes note : MainActivity.notes) {
-//                if (note.getId().equals(idNote)) {
-//                    editTextHeader.setText(notes.getHeader());
-//                    editTextDescription.setText(notes.getDescription());
-//                    textViewDate.setVisibility(View.VISIBLE);
-//                    textViewDate.setText(notes.getDate());
-//                    id = notes.getId();
-//                    color = notes.getColor();
-//                    positionOfNote = MainActivity.notes.indexOf(note);
         }
-//            }
     }
+
+
+    // скрытие иконки в нижнем меню
 //    @Override
 //    public boolean onPrepareOptionsMenu(Menu menu) {
 //        super.onPrepareOptionsMenu(menu);
@@ -141,7 +120,6 @@ public class EditNoteActivity extends AppCompatActivity implements DeleteDialog.
 //        return true;
 //
 //    }
-
 
     public void initToolbar() {
         Toolbar toolbarEditNote = findViewById(R.id.toolbarEditNoteUp);
@@ -171,63 +149,44 @@ public class EditNoteActivity extends AppCompatActivity implements DeleteDialog.
         String date = dateFormat.format(currentDate);
         String header = editTextHeader.getText().toString().trim();
         String description = editTextDescription.getText().toString().trim();
-//
-//        if (!id.isEmpty()) {
-//            notes = dataBase.noteDAO().findNotesById(noteId);
-//            if (!header.isEmpty() || !description.isEmpty()) {
-//                dataBase.noteDAO().deleteNote(notes);
-//                Notes newNote = new Notes(id, header, description, color, date);
-//                dataBase.noteDAO().insertNote(newNote);
-//
-//            } else {
-//                dataBase.noteDAO().deleteNote(notes);
-//            }
-//        } else {
-//            if (!header.isEmpty() || !description.isEmpty()) {
-//                color = getRandomColor().trim();
-//                id = UUID.randomUUID().toString().replace("-", "").trim();
-//                Notes newNote = new Notes(id, header, description, color, date);
-//                dataBase.noteDAO().insertNote(newNote);
-//            }
-//        }
+        if (!id.isEmpty()) {
+            if (!header.isEmpty() || !description.isEmpty()) {
+                newNote = new Notes(id, header, description, color, date);
+                insertOrUpdateNote();
+            } else {
+                deleteNote();
+            }
+        } else {
+            if (!header.isEmpty() || !description.isEmpty()) {
+                color = getRandomColor().trim();
+                id = UUID.randomUUID().toString().replace("-", "").trim();
+                newNote = new Notes(id, header, description, color, date);
+                insertOrUpdateNote();
+            }
+        }
         finish();
     }
 
     private String getRandomColor() {
-
         String firstColor = "#E2F3F0";
         String secondColor = "#FDCCCA";
         String thirdColor = "#C3D9FF";
         String fourthColor = "#F8D9DE";
         String fifthColor = "#FFF5E6";
-
         String[] colors = {firstColor, secondColor, thirdColor, fourthColor, fifthColor};
         String randomColor = colors[new Random().nextInt(colors.length)];
         Log.i("random", "" + randomColor);
-
         return randomColor;
     }
-//    View.OnClickListener onClickButtonShare = new View.OnClickListener() {
-//        @Override
-//        public void onClick(View view) {
-//            shareMessage();
-//        }
-//    };
+
     public void shareNote() {
         if (editTextHeader.getText().toString().isEmpty() && editTextDescription.getText().toString().isEmpty()) {
-            Log.i("dialog", "sendIsEmpty!");
+            Log.i("dialog", "LinesAreEmpty!");
         } else {
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
-//            if (editTextHeader.getText().toString().isEmpty() || editTextDescription.getText().toString().isEmpty()) {
-//                sendIntent.putExtra(Intent.EXTRA_TEXT, editTextHeader.getText().toString().trim() + editTextDescription.getText().toString().trim());
-//            } else {
-//                sendIntent.putExtra(Intent.EXTRA_TEXT, editTextHeader.getText().toString().trim() + "\n" + editTextDescription.getText().toString().trim());
-//            }
             sendIntent.putExtra(Intent.EXTRA_SUBJECT, editTextHeader.getText().toString().trim());
             sendIntent.putExtra(Intent.EXTRA_TEXT, editTextDescription.getText().toString().trim());
-
-
             sendIntent.setType("text/plain");
             startActivity(sendIntent);
         }
@@ -260,49 +219,79 @@ public class EditNoteActivity extends AppCompatActivity implements DeleteDialog.
         });
     }
 
+    public void insertOrUpdateNote() {
+        compositeDisposable.add(editViewModel.insertOrUpdateNote(newNote)
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Action() {
+                    @Override
+                    public void run() throws Exception {
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        Log.e("error", "error", throwable);
+                    }
+                }));
+    }
+
+    public void deleteNote() {
+        compositeDisposable.add(editViewModel.deleteNoteById(id)
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Action() {
+                               @Override
+                               public void run() throws Exception {
+
+                               }
+                           }, new Consumer<Throwable>() {
+                               @Override
+                               public void accept(Throwable throwable) throws Exception {
+                                   Log.e("error", "error", throwable);
+                               }
+                           }
+                ));
+    }
+
     @Override
     public void onDeleteButtonClicked() {
-//        notes = dataBase.noteDAO().findNotesById(noteId);
-//        dataBase.noteDAO().deleteNote(notes);
-//        Log.i("id","из метода: " + notes.getId());
+        deleteNote();
         finish();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        Log.i("dialog", "onStart");
+        Log.i("start", "onStartEditActivity");
     }
 
     @Override
     protected void onPostResume() {
         super.onPostResume();
-        Log.i("dialog", "onPostResume");
+        Log.i("start", "onPostResumeEditActivity");
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        Log.i("dialog", "onPause");
+        Log.i("start", "onPauseEditActivity");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         compositeDisposable.clear();
-        Log.i("dialog", "onStop");
+        Log.i("start", "onStopEditActivity");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.i("dialog", "onDestroy");
+        Log.i("start", "onDestroyEditActivity");
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Log.i("dialog", "onBackPressed");
+        Log.i("start", "onBackPressedEditActivity");
 
     }
 }

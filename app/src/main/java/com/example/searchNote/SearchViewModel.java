@@ -11,25 +11,20 @@ import com.example.DataBase.NotesDataBase;
 
 import java.util.List;
 
+import io.reactivex.Flowable;
+
 public class SearchViewModel extends AndroidViewModel {
+
     private NotesDataBase notesDataBase;
-    private LiveData<List<Notes>> notes;
-    private String queryFromSearchString;
-
-
-    public void setQueryFromSearchString(String queryFromSearchString) {
-        this.queryFromSearchString = queryFromSearchString;
-    }
+    private Flowable<List<Notes>> notes;
 
     public SearchViewModel(@NonNull Application application) {
         super(application);
-//        notesDataBase = NotesDataBase.getInstance(getApplication());
-//        notes = notesDataBase.noteDAO().searchNotesFromHeaderOrDescription(queryFromSearchString);
+        notesDataBase = NotesDataBase.getInstance(getApplication());
     }
 
-    public LiveData<List<Notes>> getNotesFromHeaderOrDescription() {
-        return  notes;
+    public Flowable<List<Notes>> getNotes(String searchQuery) {
+        notes = notesDataBase.noteDAO().searchOfNotes(searchQuery);
+        return notes;
     }
-
-
 }

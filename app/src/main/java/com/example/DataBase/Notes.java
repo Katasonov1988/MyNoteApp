@@ -15,7 +15,6 @@ public class Notes {
     private String color;
     private String date;
 
-
     public Notes(@NonNull String id, String header, String description, String color, String date) {
         this.id = id;
         this.header = header;
@@ -64,6 +63,5 @@ public class Notes {
     public void setDate(String date) {
         this.date = date;
     }
-
 
 }
