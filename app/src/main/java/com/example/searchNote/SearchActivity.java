@@ -113,26 +113,14 @@ public class SearchActivity extends AppCompatActivity {
         MenuItem searchItem = menu.findItem(R.id.search_button);
         searchItem.expandActionView();
 
-
         searchView = (SearchView) searchItem.getActionView();
-//        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-//        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-//      searchView.setIconified(false);
         searchView.setMaxWidth(Integer.MAX_VALUE);
         searchView.setQueryHint(getResources().getString(R.string.search));
-        searchView.isFocusable();
-        searchView.setIconifiedByDefault(false);
         searchView.requestFocusFromTouch();
+        searchView.setIconifiedByDefault(false);
+        searchView.isFocusable();
+        searchView.onActionViewExpanded();
         searchView.findViewById(androidx.appcompat.R.id.search_close_btn).setVisibility(View.VISIBLE);
-        searchView.findViewById(androidx.appcompat.R.id.search_mag_icon).setVisibility(View.GONE);
-
-//        searchView.onActionViewExpanded();
-//        searchView.requestFocus();
-
-
-//        searchView.findViewById(androidx.appcompat.R.id.search_plate).setBackgroundColor(Color.TRANSPARENT);
-//        searchView.setQuery(searchViewString, false);
-
 
         View closeBtn = searchView.findViewById(androidx.appcompat.R.id.search_close_btn);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -144,7 +132,8 @@ public class SearchActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String s) {
-                searchView.findViewById(androidx.appcompat.R.id.search_close_btn).setVisibility(View.VISIBLE);
+                closeBtn.setVisibility(View.VISIBLE);
+//                searchView.findViewById(androidx.appcompat.R.id.search_close_btn).setVisibility(View.VISIBLE);
                 if (s.isEmpty()) {
                     searchTextView.setVisibility(View.VISIBLE);
                     searchTextView.setText(R.string.for_search_enter_text);
@@ -195,32 +184,6 @@ public class SearchActivity extends AppCompatActivity {
         return true;
     }
 
-
-//    public void pressedBackButton () {
-//        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
-//            @Override
-//            public void handleOnBackPressed() {
-//                if (searchView.getQuery().toString().isEmpty()) {
-//                    finish();
-//                } else {
-//                    searchView.setQuery("", false);
-//                }
-//                Log.i("start", "handleOnBackPressedSearchActivity");
-////                finish();
-//            }
-//        };
-//        SearchActivity.this.getOnBackPressedDispatcher().addCallback(
-//                this, // LifecycleOwner
-//                callback);
-//    }
-
-//    @Override
-//    public void onBackPressed() {
-//        super.onBackPressed();
-//        Log.i("start", "onBackPressedSearchActivity");
-//
-//    }
-
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putString("searchView", searchViewString);
@@ -234,41 +197,6 @@ public class SearchActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Log.i("start", "onStartSearchActivity");
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.i("start", "onResumeSearchActivity");
-    }
-
-    @Override
-    protected void onPostResume() {
-        super.onPostResume();
-        Log.i("start", "onPostResumeSearchActivity");
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.i("start", "onPauseSearchActivity");
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.i("start", "onStopSearchActivity");
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.i("start", "onDestroySearchActivity");
-    }
 }
 
 

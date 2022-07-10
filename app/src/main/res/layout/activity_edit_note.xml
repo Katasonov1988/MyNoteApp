@@ -34,14 +34,16 @@
 
                 <EditText
                     android:id="@+id/editTextHeader"
-                    android:layout_marginStart="@dimen/activityEditNoteEditTextHeaderLayoutMarginStart"
-                    android:layout_marginEnd="@dimen/activityEditNoteEditTextHeaderLayoutMarginEnd"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/editNoteViewLayoutMarginTop"
                     android:backgroundTint="@android:color/transparent"
                     android:fontFamily="@font/source_sans_pro_semi_bold600"
                     android:gravity="start"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:paddingStart="0dp"
+                    android:paddingEnd="0dp"
                     android:hint="@string/write_header"
                     android:importantForAutofill="no"
                     android:inputType="textMultiLine"
@@ -52,14 +54,15 @@
 
                 <TextView
                     android:id="@+id/lastChangeOfDateTextView"
-                    android:layout_marginStart="@dimen/activityEditNoteLastChangeOfDateTextViewLayoutMarginStart"
-                    android:layout_marginEnd="@dimen/activityEditNoteLastChangeOfDateTextViewLayoutMarginEnd"
+                    android:paddingStart="0dp"
+                    android:paddingEnd="0dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/editNoteLastChangeOfDateTextViewLayoutMarginBottom"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
                     android:fontFamily="@font/source_sans_pro_regular400"
                     android:hint="@string/changed"
-                    android:paddingStart="@dimen/editNoteLastChangeOfDateTextViewPaddingStart"
                     android:textColor="@color/editNoteLastChangeOfDateTextView"
                     android:textSize="@dimen/editNoteLastChangeOfDateTextViewTextSize"
                     android:visibility="gone"
@@ -67,28 +70,40 @@
 
                 <View
                     android:id="@+id/viewLineActivityNote"
-                    android:layout_marginStart="@dimen/activityEditNoteViewLineActivityNoteLayoutMarginStart"
-                    android:layout_marginEnd="@dimen/activityEditNoteViewLineActivityNoteLayoutMarginEnd"
                     android:layout_width="match_parent"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
                     android:layout_height="@dimen/editNoteViewLineActivityNoteLayoutHeight"
                     android:background="@color/editNoteViewLineActivityNoteBackground"
                     android:backgroundTint="@color/black" />
 
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvListOfPictures"
+                    android:layout_margin="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
                 <EditText
                     android:id="@+id/editTextDescription"
-                    android:layout_marginStart="@dimen/activityEditNoteEditTextDescriptionLayoutMarginStart"
-                    android:layout_marginEnd="@dimen/activityEditNoteEditTextDescriptionLayoutMarginEnd"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
                     android:backgroundTint="@android:color/transparent"
                     android:fontFamily="@font/source_sans_pro_regular400"
                     android:hint="@string/write_text"
+                    android:paddingStart="0dp"
+                    android:paddingEnd="0dp"
                     android:importantForAutofill="no"
                     android:inputType="textMultiLine"
                     android:textColor="@color/black"
                     android:textColorHint="@color/editNoteTextColorHint"
                     android:textSize="@dimen/editNoteViewEditTextDescriptionTextSize"
-                    android:textStyle="normal" />
+                    android:textStyle="normal"
+                    />
 
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>

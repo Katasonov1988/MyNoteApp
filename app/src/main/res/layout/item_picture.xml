@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="10dp"
+
+    android:id="@+id/cardViewPictureItem"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivItemPicture"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:adjustViewBounds="true"
+        tools:src="@drawable/ic_launcher_background"/>
+
+   <androidx.appcompat.widget.AppCompatImageView
+       android:id="@+id/ivButtonClosePicture"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:scaleType="center"
+       android:layout_gravity="end"
+       android:layout_marginEnd="4dp"
+       android:layout_marginTop="4dp"
+       android:src="@drawable/ic_baseline_cancel_24"
+       />
+
+</androidx.cardview.widget.CardView>

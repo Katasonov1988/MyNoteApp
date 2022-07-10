@@ -41,6 +41,9 @@
         <item name="android:textColorHint">#575962</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:editTextColor">@color/white</item>
+        <item name="colorAccent">@android:color/darker_gray</item>
+        <!-- Applies to views in their normal state. -->
+        <item name="colorControlNormal">@android:color/darker_gray</item>
 
 
     </style>

@@ -28,5 +28,11 @@
     <string name="note_picture">Note picture</string>
     <string name="changed">Изменено</string>
     <string name="db_name">notesDataBase</string>
+    <string name="add_photo">Добавить фото</string>
+    <string name="iv_take_photo">Сделать фото</string>
+    <string name="iv_choose_from_gallery">Выбрать из галереи</string>
+    <string name="gallery">Галерея</string>
+    <string name="camera">Камера</string>
+    <string name="download_picture">Загруженная картинка</string>
 
 </resources>

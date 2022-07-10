@@ -1,32 +1,52 @@
 package com.example.editNote;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.DialogFragment;
-import androidx.lifecycle.ViewModelProvider;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.FileProvider;
+import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.DataBase.Notes;
 import com.example.myNote.R;
 import com.google.android.material.bottomappbar.BottomAppBar;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.io.File;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Random;
 import java.util.UUID;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Action;
@@ -44,6 +64,14 @@ public class EditNoteActivity extends AppCompatActivity implements DeleteDialog.
     private Notes newNote;
     private EditViewModel editViewModel;
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private BottomSheetBehavior mBottomSheetBehavior;
+    private static final int REQUEST_IMAGE_CAPTURE = 2;
+    private static final int SELECT_PICTURE = 1;
+    private String currentPhotoPath;
+
+    private List<Uri> uriPictures = new ArrayList<>();
+    private ImageAdapter imageAdapter;
+    private RecyclerView recyclerViewImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +83,12 @@ public class EditNoteActivity extends AppCompatActivity implements DeleteDialog.
         textViewDate = findViewById(R.id.lastChangeOfDateTextView);
         id = "";
         Log.i("start", "onCreateEditActivity");
+
+        recyclerViewImage = findViewById(R.id.rvListOfPictures);
+        recyclerViewImage.setLayoutManager(new GridLayoutManager(this,3));
+        imageAdapter = new ImageAdapter(uriPictures);
+        recyclerViewImage.setAdapter(imageAdapter);
+
 
         if (Build.VERSION.SDK_INT >= 21) {
             Window window = this.getWindow();
@@ -113,22 +147,6 @@ public class EditNoteActivity extends AppCompatActivity implements DeleteDialog.
                     }));
         }
     }
-
-
-    // скрытие иконки в нижнем меню
-//    @Override
-//    public boolean onPrepareOptionsMenu(Menu menu) {
-//        super.onPrepareOptionsMenu(menu);
-//        if (noteId == null) {
-//            MenuItem menuItemDeleteButton = menu.findItem(R.id.toolbarDownButtonDelete);
-//            menuItemDeleteButton.setVisible(false);
-//            MenuItem menuItemShareButton = menu.findItem(R.id.toolbarDownButtonShare);
-//            menuItemShareButton.setVisible(false);
-//        }
-//
-//        return true;
-//
-//    }
 
     public void initToolbar() {
         Toolbar toolbarEditNote = findViewById(R.id.toolbarEditNoteUp);
@@ -220,6 +238,7 @@ public class EditNoteActivity extends AppCompatActivity implements DeleteDialog.
                         shareNote();
                         return true;
                     case R.id.toolbarDownButtonAdd:
+                        openBottomSheetAndChoosePictures ();
                         return true;
                     default:
                         return true;
@@ -259,6 +278,95 @@ public class EditNoteActivity extends AppCompatActivity implements DeleteDialog.
                            }
                 ));
     }
+
+    public void openBottomSheetAndChoosePictures () {
+        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(
+                EditNoteActivity.this, R.style.Theme_MaterialComponents_Light_BottomSheetDialog);
+        View bottomSheetView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.bottom_sheet_add_pictures,
+                (LinearLayout)findViewById(R.id.modalBottomSheetContainer));
+        bottomSheetView.findViewById(R.id.tv_camera).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(EditNoteActivity.this,"Камера", Toast.LENGTH_LONG).show();
+                takePhotoAndPutUriInArrayLis();
+                bottomSheetDialog.dismiss();
+            }
+        });
+        bottomSheetView.findViewById(R.id.tv_gallery).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(EditNoteActivity.this,"Галерея", Toast.LENGTH_LONG).show();
+
+                imageChooser();
+                bottomSheetDialog.dismiss();
+            }
+        });
+        bottomSheetDialog.setContentView(bottomSheetView);
+        bottomSheetDialog.show();
+
+    }
+
+    private void takePhotoAndPutUriInArrayLis() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch ( IOException ex) {
+                Toast.makeText(EditNoteActivity.this, ex.getMessage(),Toast.LENGTH_SHORT).show();
+            }
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(this,
+                        "com.example.android.fileprovider",
+                        photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,photoURI);
+                startActivityForResult(takePictureIntent,REQUEST_IMAGE_CAPTURE);
+            }
+        }
+
+
+
+    }
+
+    private File createImageFile() throws IOException {
+        String timeStamp = new SimpleDateFormat("yyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,
+                ".jpg",
+                storageDir
+        );
+        currentPhotoPath = image.getAbsolutePath();
+        Toast.makeText(EditNoteActivity.this, "URI = " + currentPhotoPath, Toast.LENGTH_SHORT).show();
+        return image;
+
+
+    }
+
+    private void imageChooser() {
+        Intent i = new Intent();
+        i.setType("image/*");
+        i.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(i, "Select Picture"), SELECT_PICTURE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK && requestCode == SELECT_PICTURE) {
+            if (data != null) {
+                Uri selectedImageUri = data.getData();
+                if (selectedImageUri != null) {
+                    imageAdapter.setImages(selectedImageUri);
+                }
+            }
+
+        }
+    }
+
+
 
     @Override
     public void onDeleteButtonClicked() {

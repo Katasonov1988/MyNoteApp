@@ -19,7 +19,7 @@
     <dimen name="editNoteViewLineActivityNoteLayoutHeight">1dp</dimen>
     <dimen name="editNoteViewEditTextDescriptionTextSize">16sp</dimen>
     <dimen name="editNoteViewEditTextHeaderTextSize">18sp</dimen>
-    <dimen name="editNoteViewLayoutMarginTop">24dp</dimen>
+    <dimen name="editNoteViewLayoutMarginTop">8dp</dimen>
     <dimen name="editNoteLastChangeOfDateTextViewPaddingStart">4dp</dimen>
     <dimen name="editNoteLastChangeOfDateTextViewLayoutMarginBottom">16dp</dimen>
     <dimen name="editNoteLastChangeOfDateTextViewTextSize">14sp</dimen>
