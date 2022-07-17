@@ -2,6 +2,8 @@ package com.example.editNote;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,7 +16,6 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -85,7 +86,7 @@ public class EditNoteActivity extends AppCompatActivity implements DeleteDialog.
         Log.i("start", "onCreateEditActivity");
 
         recyclerViewImage = findViewById(R.id.rvListOfPictures);
-        recyclerViewImage.setLayoutManager(new GridLayoutManager(this,3));
+        recyclerViewImage.setLayoutManager(new GridLayoutManager(this, 3));
         imageAdapter = new ImageAdapter(uriPictures);
         recyclerViewImage.setAdapter(imageAdapter);
 
@@ -238,7 +239,7 @@ public class EditNoteActivity extends AppCompatActivity implements DeleteDialog.
                         shareNote();
                         return true;
                     case R.id.toolbarDownButtonAdd:
-                        openBottomSheetAndChoosePictures ();
+                        openBottomSheetAndChoosePictures();
                         return true;
                     default:
                         return true;
@@ -279,25 +280,26 @@ public class EditNoteActivity extends AppCompatActivity implements DeleteDialog.
                 ));
     }
 
-    public void openBottomSheetAndChoosePictures () {
+    public void openBottomSheetAndChoosePictures() {
         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(
                 EditNoteActivity.this, R.style.Theme_MaterialComponents_Light_BottomSheetDialog);
         View bottomSheetView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.bottom_sheet_add_pictures,
-                (LinearLayout)findViewById(R.id.modalBottomSheetContainer));
+                (LinearLayout) findViewById(R.id.modalBottomSheetContainer));
         bottomSheetView.findViewById(R.id.tv_camera).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(EditNoteActivity.this,"Камера", Toast.LENGTH_LONG).show();
-                takePhotoAndPutUriInArrayLis();
+                Toast.makeText(EditNoteActivity.this, "Камера", Toast.LENGTH_LONG).show();
+                dispatchTakePictureIntent();
+                setLastPhotoToArrayList();
                 bottomSheetDialog.dismiss();
             }
         });
         bottomSheetView.findViewById(R.id.tv_gallery).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(EditNoteActivity.this,"Галерея", Toast.LENGTH_LONG).show();
+                Toast.makeText(EditNoteActivity.this, "Галерея", Toast.LENGTH_LONG).show();
 
-                imageChooser();
+                chooseImageFromGallery();
                 bottomSheetDialog.dismiss();
             }
         });
@@ -306,27 +308,33 @@ public class EditNoteActivity extends AppCompatActivity implements DeleteDialog.
 
     }
 
-    private void takePhotoAndPutUriInArrayLis() {
+    private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             File photoFile = null;
             try {
                 photoFile = createImageFile();
-            } catch ( IOException ex) {
-                Toast.makeText(EditNoteActivity.this, ex.getMessage(),Toast.LENGTH_SHORT).show();
+            } catch (IOException ex) {
+                Toast.makeText(EditNoteActivity.this, ex.getMessage(), Toast.LENGTH_SHORT).show();
             }
             if (photoFile != null) {
                 Uri photoURI = FileProvider.getUriForFile(this,
                         "com.example.android.fileprovider",
                         photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,photoURI);
-                startActivityForResult(takePictureIntent,REQUEST_IMAGE_CAPTURE);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
             }
         }
-
-
-
     }
+
+//    private void galleryAddPic() {
+//        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+//        File f = new File(currentPhotoPath);
+//        Uri contentUri = Uri.fromFile(f);
+//        mediaScanIntent.setData(contentUri);
+//        this.sendBroadcast(mediaScanIntent);
+//    }
+
 
     private File createImageFile() throws IOException {
         String timeStamp = new SimpleDateFormat("yyMMdd_HHmmss").format(new Date());
@@ -344,7 +352,7 @@ public class EditNoteActivity extends AppCompatActivity implements DeleteDialog.
 
     }
 
-    private void imageChooser() {
+    private void chooseImageFromGallery() {
         Intent i = new Intent();
         i.setType("image/*");
         i.setAction(Intent.ACTION_GET_CONTENT);
@@ -358,15 +366,28 @@ public class EditNoteActivity extends AppCompatActivity implements DeleteDialog.
         if (resultCode == RESULT_OK && requestCode == SELECT_PICTURE) {
             if (data != null) {
                 Uri selectedImageUri = data.getData();
+
+
                 if (selectedImageUri != null) {
                     imageAdapter.setImages(selectedImageUri);
                 }
-            }
 
+                File photoFile = null;
+                try {
+                    photoFile = createImageFile();
+                } catch (IOException ex) {
+                    Toast.makeText(EditNoteActivity.this, ex.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
         }
     }
 
 
+private void setLastPhotoToArrayList() {
+        File f = new File(currentPhotoPath);
+        Uri uri = Uri.fromFile(f);
+        imageAdapter.setImages(uri);
+}
 
     @Override
     public void onDeleteButtonClicked() {
